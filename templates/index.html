@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>📚 BookNest</h2>
+    <p class="side-label">MAIN MENU</p>
+    <button class="nav active" onclick="showPage('dashboard',this)">▦ Dashboard</button>
+    <button class="nav" onclick="showPage('books',this)">▤ Books</button>
+    <button class="nav" onclick="showPage('members',this)">♙ Members</button>
+    <button class="nav" onclick="showPage('issue',this)">⇄ Issue / Return</button>
+    <div class="sidebar-bottom">Library Management System<br>Mini Project</div>
+</div>
+
+<main>
+    <header>
+        <div>
+            <h1 id="pageTitle">Dashboard</h1>
+            <p>Manage your library efficiently.</p>
+        </div>
+        <div class="profile">👤 Admin</div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page">
+        <div class="welcome">
+            <div>
+                <h2>Welcome to BookNest!</h2>
+                <p>Your library management dashboard.</p>
+            </div>
+            <span>📖</span>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <span>Total Books</span>
+                <h2 id="totalBooks">0</h2>
+                <small>Books in library</small>
+            </div>
+            <div class="stat-card">
+                <span>Available Books</span>
+                <h2 id="availableBooks">0</h2>
+                <small>Ready to issue</small>
+            </div>
+            <div class="stat-card">
+                <span>Issued Books</span>
+                <h2 id="issuedBooks">0</h2>
+                <small>Currently borrowed</small>
+            </div>
+            <div class="stat-card">
+                <span>Total Members</span>
+                <h2 id="totalMembers">0</h2>
+                <small>Registered members</small>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Recently Added Books</h2>
+                <button class="primary" onclick="showPage('books')">Manage Books</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Book</th><th>Author</th><th>ISBN</th><th>Category</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="recentBooks"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKS -->
+    <section id="books" class="page hidden">
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Book Management</h2>
+                <button class="primary" onclick="openBookForm()">+ Add Book</button>
+            </div>
+
+            <input class="search" id="bookSearch" placeholder="Search by title, author, ISBN or category..." oninput="loadBooks()">
+
+            <div id="bookForm" class="form-box hidden">
+                <h3 id="bookFormTitle">Add New Book</h3>
+                <input type="hidden" id="bookId">
+                <div class="form-grid">
+                    <input id="title" placeholder="Book Title">
+                    <input id="author" placeholder="Author">
+                    <input id="isbn" placeholder="ISBN">
+                    <input id="category" placeholder="Category">
+                </div>
+                <button class="primary" onclick="saveBook()">Save Book</button>
+                <button class="secondary" onclick="closeBookForm()">Cancel</button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="bookTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEMBERS -->
+    <section id="members" class="page hidden">
+        <div class="panel">
+            <div class="panel-heading">
+                <h2>Member Management</h2>
+                <button class="primary" onclick="openMemberForm()">+ Add Member</button>
+            </div>
+
+            <div id="memberForm" class="form-box hidden">
+                <h3>Add New Member</h3>
+                <input id="memberName" placeholder="Full Name">
+                <input id="memberEmail" type="email" placeholder="Email Address">
+                <input id="memberPhone" placeholder="Phone Number">
+                <button class="primary" onclick="saveMember()">Save Member</button>
+                <button class="secondary" onclick="closeMemberForm()">Cancel</button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="memberTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ISSUE AND RETURN -->
+    <section id="issue" class="page hidden">
+        <div class="panel">
+            <h2>Issue a Book</h2>
+            <div class="issue-form">
+                <select id="issueBook"><option value="">Select Available Book</option></select>
+                <select id="issueMember"><option value="">Select Member</option></select>
+                <button class="primary" onclick="issueBook()">Issue Book</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Issue / Return Records</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Book</th><th>Member</th><th>Issue Date</th><th>Return Date</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="transactionTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div id="toast"></div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
